@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio Design</title>
+    <meta name="description" content="Portfolio design modern" />
+    <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet"
+> <link rel="stylesheet" href="style.css">
+    <style>
+  
+      html, body { overflow-x: hidden; }
+      .fade-in { animation: fadeIn .6s ease-out; }
+      @keyframes fadeIn { from {opacity: 0; transform: translateY(6px);} to {opacity: 1; transform: translateY(0);} }
+      .caret::after { content: "|"; margin-left: 2px; opacity: 1; animation: blink 1s steps(2, start) infinite; }
+      @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
+    </style>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-40 backdrop-blur bg-slate-950/60 border-b border-white/5">
+      <div class="max-w-6xl mx-auto px-4 py-4 grid grid-cols-3 items-center relative">
+        <a href="#home" class="font-extrabold tracking-tight text-2xl">Baboii<span class="text-cyan-400">.</span></a>
+        <nav id="nav-menu" class="hidden absolute py-5 bg-slate-900/95 backdrop-blur border border-white/10 rounded-lg w-56 right-4 top-[calc(100%+8px)] justify-self-end text-slate-300 font-mono-pixel nav-glow lg:static lg:flex lg:bg-transparent lg:border-0 lg:w-auto lg:py-0 lg:rounded-none lg:shadow-none"> <ul class="block lg:flex"> <li class="group"><a href="#home" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Home</a></li> <li class="group"><a href="#latest" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Latest</a></li> <li class="group"><a href="#categories" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Categories</a></li> <li class="group"><a href="#contact" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Contact</a></li> </ul> </nav> <div class="justify-self-end flex items-center gap-2"> <button id="burger" name="burger" type="button" class="inline-flex lg:hidden px-3 py-2 border border-white/20 rounded-md text-white hover:bg-white/10"> <span></span><span></span><span></span> </button> </div>
+      </div>
+    </header>
+
+    <main id="home" class="max-w-6xl mx-auto px-4 pt-24 sm:pt-28">
+      <!-- Floating icons layer (full-width overlay above hero) -->
+<section id="icons-layer" class="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+        <div id="hero-icons" class="pointer-events-none sticky h-full w-full z-0"></div>
+        <script>
+          (function () {
+            var hero = document.getElementById('hero-photo-wrap');
+            var icons = document.getElementById('hero-icons');
+            if (!hero || !icons) return;
+            function setCenter() {
+              var rect = hero.getBoundingClientRect();
+              var cx = rect.left + rect.width / 2;
+              var cy = rect.top + rect.height / 2;
+              icons.style.setProperty('--hero-cx', cx + 'px');
+              icons.style.setProperty('--hero-cy', cy + 'px');
+              var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+              var vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+              var r = Math.max(vw, vh) * 0.45; // reveal radius
+              icons.style.setProperty('--icons-reveal-radius', r + 'px');
+            }
+            function enter() {
+              icons.classList.add('icons-reveal-prep');
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  function onEnd(e) {
+                    icons.classList.remove('icons-reveal-prep');
+                    icons.removeEventListener('transitionend', onEnd);
+                  }
+                  icons.addEventListener('transitionend', onEnd);
+                  icons.classList.add('icons-revealed');
+                });
+              });
+            }
+            setCenter();
+            function afterLoader() { setCenter(); enter(); }
+            if (window.APP_LOADER_DONE) {
+              afterLoader();
+            } else {
+              window.addEventListener('app-loader:done', afterLoader, { once: true });
+              // Fallback: if custom event missed, run on load
+              window.addEventListener('load', afterLoader, { once: true });
+            }
+            window.addEventListener('resize', setCenter);
+          })();
+        </script>
+        <script src="./hero-typing.js" defer></script>
+        <script src="./hero-photo.js" defer></script>
+        <script src="./follow-ui.js" defer></script>
+        <script src="./loader.js" defer></script>
+        <script>
+          // Fallback to avoid ReferenceError from app.js when dragging icons
+          // Ensure a global no-op if onFirstClick isn't defined yet
+          try {
+            if (typeof onFirstClick !== 'function') {
+              var onFirstClick = function () {};
+            }
+          } catch (e) {
+            // In very strict contexts, defining via globalThis as a fallback
+            if (typeof globalThis !== 'undefined' && typeof globalThis.onFirstClick !== 'function') {
+              globalThis.onFirstClick = function () {};
+            }
+          }
+        </script>
+      </section>
+      <!-- Hero -->
+      <section id="hero" class="relative pt-10 lg:pt-16 pb-10 lg:pb-16 overflow-hidden">
+        <div class="relative flex flex-col items-center text-center gap-6">
+          <div>
+            <p class="text-sm uppercase tracking-wider text-slate-400">Hello, I’m</p>
+            <h1 class="mt-1 text-4xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+              <span id="hero-name"></span>
+              <span class="block text-cyan-400" id="hero-role"></span>
+            </h1>
+          </div>
+          <div class="relative">
+<div class="relative z-10 mx-auto w-[19.2rem] sm:w-[21.6rem] lg:w-[24rem] aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl" id="hero-photo-wrap">
+              <img id="hero-photo" alt="Profile" class="w-full h-full object-cover select-none" draggable="false" />
+            </div>
+          </div>
+          <div class="mt-2 flex gap-3">
+            <a href="#latest" class="px-5 py-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold">My Projects</a>
+            <a href="#contact" class="px-5 py-3 rounded-lg border border-white/10 hover:border-white/20">Contact</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Latest Projects (masonry) -->
+      <section id="latest" class="py-8 lg:py-12">
+        <div class="flex items-end justify-between mb-6">
+          <h2 class="text-2xl lg:text-3xl font-bold">Latest Projects</h2>
+        </div>
+        <div id="projects-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-6"></div>
+        <div id="projects-empty" class="hidden text-slate-400 text-center py-12">Belum ada project untuk ditampilkan.</div>
+      </section>
+
+
+      <!-- Categories with Carousel -->
+      <section id="categories" class="py-8 lg:py-12">
+        <div class="flex items-end justify-between mb-6">
+          <h2 class="text-2xl lg:text-3xl font-bold">By Category</h2>
+        </div>
+        <div id="categories-wrap" class="space-y-12"></div>
+      </section>
+
+      
+
+      <!-- Contact -->
+      <section id="contact" class="py-8 lg:py-12">
+        <h2 class="text-2xl lg:text-3xl font-bold mb-4">Contact</h2>
+        <form id="contact-form" class="max-w-xl space-y-4">
+          <div>
+            <label class="block text-sm mb-1">Nama</label>
+            <input name="name" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Email</label>
+            <input type="email" name="email" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Pesan</label>
+            <textarea name="message" rows="5" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+          </div>
+          <div class="flex items-center gap-3">
+            <button type="submit" class="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold">Kirim</button>
+            <span id="contact-status" class="text-sm text-slate-400"></span>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="border-t border-white/5 mt-12">
+      <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-slate-400">
+        © <span id="year"></span> Zyone — Crafted with care.
+      </div>
+    </footer>
+
+    <!-- Modal Project Detail -->
+    <div id="project-modal" class="hidden fixed inset-0 z-50">
+      <div class="absolute inset-0 bg-black/60" data-close></div>
+      <div class="relative mx-auto mt-16 max-w-3xl px-4">
+        <div class="rounded-xl bg-slate-900 border border-white/10 shadow-2xl overflow-hidden">
+          <div class="flex justify-between items-start p-4 border-b border-white/5">
+            <h3 id="modal-title" class="text-xl font-bold"></h3>
+            <button class="p-2 hover:bg-white/5 rounded-lg" data-close aria-label="Tutup">✕</button>
+          </div>
+          <div class="p-4 space-y-4">
+            <img id="modal-image" class="w-full rounded-lg ring-1 ring-white/10 hidden" alt="" />
+            <p id="modal-desc" class="text-slate-300"></p>
+            <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+            <div id="modal-links" class="flex gap-3 pt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./config.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+  </html>

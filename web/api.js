@@ -1,0 +1,76 @@
+export function getBaseUrl() {
+  const cfg = window.APP_CONFIG || {};
+  return (cfg.BASE_URL || "").replace(/\/$/, "");
+}
+
+async function request(path, options = {}) {
+  const base = getBaseUrl();
+  const url = `${base}${path}`;
+  const headers = {
+    Accept: "application/json",
+    ...(options.body ? { "Content-Type": "application/json" } : {}),
+    ...(options.headers || {}),
+  };
+  const res = await fetch(url, { ...options, headers, mode: "cors" });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`HTTP ${res.status}: ${text || res.statusText}`);
+  }
+  const ct = res.headers.get("content-type") || "";
+  return ct.includes("application/json") ? res.json() : res.text();
+}
+
+export const api = {
+  async getCategories() {
+    const path = "/api/categories";
+    return request(path);
+  },
+  async getGallery(categoryId) {
+    const path = `/api/gallery?categoryId=${encodeURIComponent(categoryId)}`;
+    return request(path);
+  },
+  async getLatest(limit = 20) {
+    const path = `/api/latest?limit=${encodeURIComponent(limit)}`;
+    return request(path);
+  },
+  async getProjects() {
+    const path = window.APP_CONFIG?.PROJECTS_ENDPOINT || "/projects";
+    const data = await request(path);
+    if (Array.isArray(data)) return data;
+    return data?.items || data?.data || [];
+  },
+  async getProjectById(id) {
+    const builder = window.APP_CONFIG?.PROJECT_DETAIL;
+    const path = typeof builder === "function" ? builder(id) : `/projects/${id}`;
+    return request(path);
+  },
+  async sendContact(payload) {
+    const path = window.APP_CONFIG?.CONTACT_ENDPOINT || "/contact";
+    return request(path, { method: "POST", body: JSON.stringify(payload) });
+  },
+};
+
+export function normalizeProject(p) {
+  if (!p || typeof p !== "object") return null;
+  const id = p.id ?? p._id ?? p.slug ?? p.key ?? String(Math.random()).slice(2);
+  const title = p.title ?? p.name ?? p.projectName ?? "Untitled";
+  const description = p.description ?? p.summary ?? p.excerpt ?? (p.modifiedTime ? `Diperbarui ${new Date(p.modifiedTime).toLocaleDateString('id-ID')}` : "");
+  // Map field Drive → URL gambar yang valid
+  const isImage = typeof p.mimeType === 'string' && p.mimeType.startsWith('image/');
+  function ensureImageUrl(val) {
+    if (val && (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('/'))) return val;
+    if (!val && id) return `/api/file/thumb/${id}`;
+    // jika val terlihat seperti ID mentah
+    if (val) return `/api/file/thumb/${val}`;
+    return null;
+  }
+  const image = isImage ? ensureImageUrl(p.image || p.thumb || null) : null;
+  const tags = (p.tags ?? p.tech ?? p.stack ?? [])
+    .concat([p.category?.name, p.mimeType].filter(Boolean));
+  const link = p.link ?? p.url ?? p.live ?? p.view ?? p.preview ?? (id ? `/api/file/image/${id}` : null);
+  const repo = p.repo ?? p.repository ?? null;
+  const date = p.date ?? p.createdAt ?? p.publishedAt ?? null;
+  const width = p.width ?? p.imageMediaMetadata?.width ?? null;
+  const height = p.height ?? p.imageMediaMetadata?.height ?? null;
+  return { id, title, description, image, tags, link, repo, date, width, height, raw: p };
+}

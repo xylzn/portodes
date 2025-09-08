@@ -1,0 +1,367 @@
+/* Pixel theme styles extracted to CSS */
+
+/* Fonts: Press Start 2P for headings, VT323 for mono pixel text */
+h1, h2, h3 { font-family: 'Press Start 2P', Inter, ui-sans-serif, system-ui, sans-serif; }
+.font-pixel { font-family: 'Press Start 2P', Inter, ui-sans-serif, system-ui, sans-serif; }
+.font-mono-pixel { font-family: 'VT323', ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .5px; }
+
+/* Navbar glow */
+.nav-glow a { transition: color .2s ease, text-shadow .2s ease; }
+.nav-glow a:hover { color: #d8ff6a; text-shadow: 0 0 8px rgba(216,255,106,.7), 0 0 14px rgba(158,247,210,.5); }
+
+/* Pixel scanline background behind hero area (uses --hero-h from JS) */
+#home { position: relative; }
+#home::before {
+  content: "";
+  position: absolute; left: 50%; transform: translateX(-50%); top: 0;
+  width: 100vw; height: var(--hero-h, 60vh);
+  background:
+    radial-gradient(900px circle at 50% 20%, rgba(216,255,106,.06), transparent 60%),
+    repeating-linear-gradient(to bottom, rgba(255,255,255,.03) 0 2px, transparent 2px 4px);
+  pointer-events: none; z-index: 0;
+}
+
+/* Hero photo fade transition (2s) */
+#hero-photo { transition: opacity 2s ease; opacity: 1; }
+/* Clean hero photo (no border/shadow, image contain and slightly smaller) */
+#hero-photo-wrap { box-shadow: none !important; border: 0 !important; }
+#hero-photo { object-fit: contain !important; width: 100%; height: 100%; max-width: 100%; max-height: 100%; display: block; margin: auto; }
+
+/* Clean hero photo (no border/shadow, image contain and slightly smaller) */
+#hero-photo-wrap { box-shadow: none !important; border: 0 !important; }
+#hero-photo { object-fit: contain !important; width: 100%; height: 100%; max-width: 90%; max-height: 90%; display: block; margin: auto; }
+
+/* Hamburger button */
+#burger { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 44px; height: 40px; display: inline-flex; align-items: center; justify-content: center; line-height: 0; }
+#burger span { position: absolute; left: 50%; width: 26px; height: 2px; background: currentColor; border-radius: 9999px; transform: translateX(-50%); transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease; }
+#burger span:nth-child(1) { top: 12px; }
+#burger span:nth-child(2) { top: 19px; }
+#burger span:nth-child(3) { top: 26px; }
+/* On active: turn into X (rotate top/bottom to center) */
+#burger.burger-active span:nth-child(1) { top: 50%; transform: translate(-50%, -50%) rotate(45deg); }
+#burger.burger-active span:nth-child(2) { opacity: 0; }
+#burger.burger-active span:nth-child(3) { top: 50%; transform: translate(-50%, -50%) rotate(-45deg); }
+#burger:hover { border-color: rgba(14,165,233,.8) !important; box-shadow: 0 0 10px rgba(14,165,233,.4), 0 0 16px rgba(14,165,233,.25); }
+#burger:hover span { box-shadow: 0 0 10px rgba(14,165,233,.6); }
+
+/* Ensure dropdown above content */
+#nav-menu { z-index: 50; }
+
+/* Hide burger on desktop (>= lg) */
+@media (min-width: 1024px) {
+  #burger { display: none !important; }
+}
+
+/* Desktop nav should be transparent (no dropdown styles) */
+@media (min-width: 1024px) {
+  #nav-menu {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* Make draggable icons larger and glowy by default */
+.drag-icon-glow { filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)) drop-shadow(0 0 10px rgba(34,211,238,.5)); }
+.drag-icon-glow:hover { filter: drop-shadow(0 4px 12px rgba(0,0,0,.35)) drop-shadow(0 0 18px rgba(34,211,238,.7)) drop-shadow(0 0 26px rgba(99,102,241,.6)); }
+/* Icons reveal animation from hero center */
+#hero-icons {
+  --hero-cx: 50vw;
+  --hero-cy: 50vh;
+  --icons-reveal-radius: 40vmin;
+  transform-origin: var(--hero-cx) var(--hero-cy);
+}
+
+#hero-icons.icons-reveal-prep {
+  opacity: 0;
+  -webkit-clip-path: circle(0 at var(--hero-cx) var(--hero-cy));
+  clip-path: circle(0 at var(--hero-cx) var(--hero-cy));
+  transition: -webkit-clip-path 700ms ease-out, clip-path 700ms ease-out, opacity 550ms ease-in 450ms;
+}
+
+#hero-icons.icons-revealed {
+  opacity: 1;
+  -webkit-clip-path: circle(var(--icons-reveal-radius) at var(--hero-cx) var(--hero-cy));
+  clip-path: circle(var(--icons-reveal-radius) at var(--hero-cx) var(--hero-cy));
+  transition: -webkit-clip-path 700ms ease-out, clip-path 700ms ease-out, opacity 550ms ease-in 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-icons.icons-reveal-prep,
+  #hero-icons.icons-revealed {
+    transition: none;
+    -webkit-clip-path: none;
+    clip-path: none;
+    opacity: 1;
+  }
+}
+/* Typing caret styles for hero typing */
+.typing-caret::after {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background-color: currentColor;
+  animation: typing-caret-blink 1s steps(1, end) infinite;
+}
+
+@keyframes typing-caret-blink {
+  50% { opacity: 0; }
+}
+/* Loader background theme variable */
+:root { --loader-bg: #000000; }
+
+/* Common selectors for loader overlay; adjust to your actual markup */
+#app-loader, #loader, .preloader {
+  background: var(--loader-bg);
+}
+
+/* Optional: make GIFs with black background blend with custom bg */
+.loader-img.blend-screen { mix-blend-mode: screen; }
+
+/* Loader overlay styles */
+#app-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: var(--loader-bg);
+  transition: opacity 300ms ease;
+}
+
+#app-loader.is-hiding { opacity: 0; pointer-events: none; }
+
+#app-loader .loader-box {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 1; /* above star layers */
+}
+
+#app-loader .loader-img {
+  width: min(80vw, 85vh); /* ~80% of viewport width, limited by height */
+  height: auto;
+  image-rendering: pixelated; /* cocok untuk aset pixel */
+}
+
+#app-loader .loader-text {
+  color: #cbd5e1; /* slate-300 */
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* CSS spinner fallback */
+.loader-spinner {
+  width: 68px;  /* +50% from 45px */
+  height: 68px; /* +50% from 45px */
+  border: 4px solid rgba(255,255,255,0.25);
+  border-top-color: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  animation: loader-spin 1s linear infinite;
+}
+
+@keyframes loader-spin { to { transform: rotate(360deg); } }
+
+/* ===== Space Theme for Loader ===== */
+#app-loader.theme-space {
+  position: fixed;
+  overflow: hidden;
+  /* Deep space base + subtle nebulas */
+  background:
+    radial-gradient(900px 600px at 12% 18%, rgba(59,130,246,0.08), transparent 60%),
+    radial-gradient(800px 600px at 80% 25%, rgba(236,72,153,0.06), transparent 60%),
+    radial-gradient(700px 500px at 50% 82%, rgba(16,185,129,0.05), transparent 60%),
+    linear-gradient(180deg, #020617 0%, #030712 50%, #000 100%);
+}
+
+#app-loader.theme-space::before,
+#app-loader.theme-space::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Near stars */
+#app-loader.theme-space::before {
+  background-image:
+    radial-gradient(1px 1px at 25px 35px, rgba(255,255,255,0.95), transparent),
+    radial-gradient(1px 1px at 75px 125px, rgba(255,255,255,0.85), transparent),
+    radial-gradient(1px 1px at 125px 75px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1.5px 1.5px at 175px 35px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1.5px 1.5px at 50px 175px, rgba(255,255,255,0.9), transparent);
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  animation: starsScroll1 60s linear infinite;
+  opacity: 0.8;
+}
+
+/* Far stars */
+#app-loader.theme-space::after {
+  background-image:
+    radial-gradient(1px 1px at 30px 60px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 90px 150px, rgba(255,255,255,0.55), transparent),
+    radial-gradient(1px 1px at 150px 90px, rgba(255,255,255,0.55), transparent),
+    radial-gradient(2px 2px at 10px 10px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(2px 2px at 190px 190px, rgba(255,255,255,0.5), transparent);
+  background-size: 300px 300px;
+  background-repeat: repeat;
+  animation: starsScroll2 120s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes starsScroll1 {
+  from { background-position: 0 0; }
+  to   { background-position: 0 200px; }
+}
+
+@keyframes starsScroll2 {
+  from { background-position: 0 0; }
+  to   { background-position: -200px 300px; }
+}
+
+/* ===== Hero photo smooth crossfade ===== */
+#hero-photo-wrap { position: relative; }
+#hero-photo { transition: opacity 420ms ease; object-fit: cover; object-position: center; }
+.hero-fade-clone {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; object-position: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 520ms ease;
+}
+
+/* Alternative reveal without any perceived zoom: masked circular wipe */
+.hero-reveal-clone {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; object-position: center;
+  pointer-events: none;
+  -webkit-clip-path: circle(0 at 45% 58%);
+  clip-path: circle(0 at 45% 58%);
+  transition: -webkit-clip-path 520ms ease-out, clip-path 520ms ease-out;
+  will-change: clip-path;
+}
+.hero-reveal-clone.revealed {
+  -webkit-clip-path: circle(150% at 45% 58%);
+  clip-path: circle(150% at 45% 58%);
+}
+
+/* Hard-stop any scale/transform on the hero image/wrap to avoid visual zoom */
+#hero-photo-wrap,
+#hero-photo,
+#hero-photo-wrap .hero-fade-clone { transform: none !important; }
+
+/* ===== Hero photo messages ===== */
+#hero-photo-wrap .hero-msg {
+  position: absolute;
+  top: 1.1rem; /* sedikit diturunkan */
+  right: 0.6rem;
+  left: auto;
+  transform: none;
+  padding: 0.6rem 0.9rem; /* lebih besar */
+  border-radius: 0.7rem;  /* lebih bulat */
+  font-weight: 700;
+  font-size: 1.25rem;     /* lebih besar lagi */
+  letter-spacing: 0.03em;
+  color: #e5f2ff;
+  background: linear-gradient(180deg, rgba(2,6,23,0.85), rgba(2,6,23,0.65));
+  border: 1px solid rgba(148,163,184,0.35);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35), 0 0 24px rgba(34,197,94,0.25);
+  white-space: nowrap;
+  line-height: 1.15;
+  opacity: 0;
+  pointer-events: none;
+  animation: hero-msg-pop 3200ms ease forwards; /* lebih lama */
+  z-index: 2;
+}
+
+/* Modifier: top-left anchor for bubble */
+#hero-photo-wrap .hero-msg.hero-msg--tl { left: 0.6rem; right: auto; }
+
+/* (removed) zoom pop effect on profile wrapper during swap */
+
+@keyframes hero-msg-pop {
+  0%   { transform: translateY(8px);  opacity: 0; }
+  12%  { transform: translateY(0);     opacity: 1; }
+  80%  { transform: translateY(0);     opacity: 1; }
+  100% { transform: translateY(-4px);  opacity: 0; }
+}
+
+/* ===== Follow Me navbar UI ===== */
+.has-follow-ui, .header-follow-host { position: relative; }
+
+#follow-area { display: none; gap: 0.5rem; align-items: center; position: absolute; right: var(--header-xpad, 0.75rem); top: 50%; transform: translateY(-50%); z-index: 30; }
+#follow-btn { position: relative; padding: 0.5rem 0.9rem; font-weight: 700; border-radius: 0.5rem; border: 1px solid rgba(148,163,184,0.35); background: rgba(2,6,23,0.6); color: #e5f2ff; backdrop-filter: blur(6px); }
+#follow-btn:hover { background: rgba(2,6,23,0.8); }
+#follow-menu { position: absolute; right: 0; top: calc(100% + 8px); display: none; padding: 0.5rem; border-radius: 0.5rem; background: rgba(2,6,23,0.8); border: 1px solid rgba(148,163,184,0.35); box-shadow: 0 12px 28px rgba(0,0,0,0.35); z-index: 40; min-width: 220px; }
+#follow-area:hover #follow-menu, #follow-area.open #follow-menu { display: block; }
+
+/* Icon wrapper and sizes */
+.follow-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 8px; background: rgba(2,6,23,0.65); border: 1px solid rgba(148,163,184,0.35); }
+.follow-icon img { width: 24px; height: 24px; object-fit: contain; image-rendering: -webkit-optimize-contrast; }
+.follow-icon span { font-size: 0.8rem; font-weight: 700; color: #e5e7eb; }
+
+/* Desktop dropdown items stacked vertically */
+.follow-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.5rem; border-radius: 0.45rem; color: #e5e7eb; text-decoration: none; }
+.follow-item:hover { background: rgba(30,41,59,0.6); }
+.follow-item .handle { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.02em; color: #e2e8f0; }
+
+#socials-mobile { display: none; gap: 0.75rem; align-items: center; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 20; }
+/* Mobile: larger logos, no background — glow only */
+#socials-mobile .follow-icon { width: 40px; height: 40px; background: transparent; border: 0; }
+#socials-mobile .follow-icon img { width: 28px; height: 28px; filter: drop-shadow(0 0 10px rgba(56,189,248,0.55)) drop-shadow(0 0 18px rgba(56,189,248,0.35)); }
+
+@media (min-width: 1024px) {
+  #follow-area { display: flex; }
+  #socials-mobile { display: none; }
+}
+
+@media (max-width: 1023.98px) {
+  #follow-area { display: none; }
+  #socials-mobile { display: flex; }
+}
+
+/* Role light sweep effect (infinite) */
+#hero-role.role-sweep {
+  position: relative;
+  display: inline-block; /* ensure background animates reliably */
+  background-image:
+    linear-gradient(110deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 44%,
+      rgba(255,255,255,0.95) 50%,
+      rgba(255,255,255,0) 56%,
+      rgba(255,255,255,0) 100%),
+    linear-gradient(0deg, currentColor, currentColor);
+  /* Reduce travel distance so the highlight reappears immediately */
+  background-size: 200% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-position: -100% 0, 0 0;
+  background-blend-mode: lighten; /* make highlight pop over base color */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Slower, constant sweep speed */
+  animation: role-sweep-move 8s linear infinite;
+  will-change: background-position;
+}
+
+@keyframes role-sweep-move {
+  to { background-position: 100% 0, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #hero-role.role-sweep { animation: none; background-position: 0 0, 0 0; }
+}
