@@ -3,7 +3,15 @@ const { google } = require("googleapis");
 // Create Google Drive client (read-only)
 async function getDrive() {
   let auth;
-  if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+  if (process.env.GOOGLE_CLIENT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
+    auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: process.env.GOOGLE_CLIENT_EMAIL,
+        private_key: (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, "\n"),
+      },
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+    });
+  } else if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
     // Preferred for Vercel: set full JSON key in env var
     const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
     const creds = typeof raw === "string" ? JSON.parse(raw) : raw;
@@ -31,4 +39,3 @@ async function getDrive() {
 }
 
 module.exports = { getDrive };
-
