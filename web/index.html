@@ -16,13 +16,37 @@
       @keyframes fadeIn { from {opacity: 0; transform: translateY(6px);} to {opacity: 1; transform: translateY(0);} }
       .caret::after { content: "|"; margin-left: 2px; opacity: 1; animation: blink 1s steps(2, start) infinite; }
       @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
+      /* Instant preloader: hide content until loader attaches */
+      body[data-preload] > :not(#preloader) { visibility: hidden !important; }
+      #preloader { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #000; z-index: 9999; }
+      #preloader .spinner { width: 40px; height: 40px; border-radius: 9999px; border: 3px solid rgba(255,255,255,.25); border-top-color: #22d3ee; animation: spin .8s linear infinite; }
+      #preloader .label { margin-top: 12px; color: #cbd5e1; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; letter-spacing: .08em; font-size: 12px; text-align:center; }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
-  <body class="bg-slate-950 text-slate-100">
+  <body class="bg-slate-950 text-slate-100" data-preload>
+    <div id="preloader">
+      <div>
+        <div class="spinner mx-auto"></div>
+        <div class="label">LOADING</div>
+      </div>
+    </div>
+    <script>
+      (function(){
+        var pre = document.getElementById('preloader');
+        function hide(){
+          if (!pre) return;
+          pre.style.opacity = '0';
+          setTimeout(function(){ if(pre && pre.parentNode) pre.parentNode.removeChild(pre); document.body.removeAttribute('data-preload'); }, 120);
+        }
+        window.addEventListener('app-loader:done', hide, { once: true });
+        window.addEventListener('load', function(){ setTimeout(hide, 100); }, { once: true });
+      })();
+    </script>
     <!-- Navbar -->
     <header class="fixed top-0 left-0 right-0 z-40 backdrop-blur bg-slate-950/60 border-b border-white/5">
       <div class="max-w-6xl mx-auto px-4 py-4 grid grid-cols-3 items-center relative">
-        <a href="#home" class="font-extrabold tracking-tight text-2xl">Baboii<span class="text-cyan-400">.</span></a>
+        <a href="#home" class="font-extrabold tracking-tight text-2xl">D Rialdi<span class="text-cyan-400">.</span></a>
         <nav id="nav-menu" class="hidden absolute py-5 bg-slate-900/95 backdrop-blur border border-white/10 rounded-lg w-56 right-4 top-[calc(100%+8px)] justify-self-end text-slate-300 font-mono-pixel nav-glow lg:static lg:flex lg:bg-transparent lg:border-0 lg:w-auto lg:py-0 lg:rounded-none lg:shadow-none"> <ul class="block lg:flex"> <li class="group"><a href="#home" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Home</a></li> <li class="group"><a href="#latest" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Latest</a></li> <li class="group"><a href="#categories" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Categories</a></li> <li class="group"><a href="#contact" class="text-base lg:text-xl py-2 px-4 block group-hover:text-cyan-300">Contact</a></li> </ul> </nav> <div class="justify-self-end flex items-center gap-2"> <button id="burger" name="burger" type="button" class="inline-flex lg:hidden px-3 py-2 border border-white/20 rounded-md text-white hover:bg-white/10"> <span></span><span></span><span></span> </button> </div>
       </div>
     </header>
@@ -75,7 +99,6 @@
         <script src="./hero-typing.js" defer></script>
         <script src="./hero-photo.js" defer></script>
         <script src="./follow-ui.js" defer></script>
-        <script src="./loader.js" defer></script>
         <script>
           // Fallback to avoid ReferenceError from app.js when dragging icons
           // Ensure a global no-op if onFirstClick isn't defined yet

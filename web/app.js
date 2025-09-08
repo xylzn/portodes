@@ -32,7 +32,7 @@ function initHero() {
   if (nameEl && cfg.NAME) nameEl.textContent = cfg.NAME;
   if (roleEl && cfg.ROLE) roleEl.textContent = cfg.ROLE;
   if (photoEl) {
-    const initialSrc = "assets/profile (2).png";
+    const initialSrc = cfg.PHOTO || "assets/profile (2).png";
     const altSrc = "assets/profile (1).png";
     photoEl.dataset.initSrc = initialSrc;
     photoEl.dataset.altSrc = altSrc;

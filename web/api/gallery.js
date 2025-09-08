@@ -22,6 +22,7 @@ module.exports = async (req, res) => {
       width: f.imageMediaMetadata?.width || null,
       height: f.imageMediaMetadata?.height || null,
       preview: `https://drive.google.com/file/d/${f.id}/preview`,
+      image: `/api/file/image/${f.id}`,
       view: f.webViewLink,
       thumb: f.thumbnailLink || null,
       modifiedTime: f.modifiedTime,
@@ -31,4 +32,3 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
-

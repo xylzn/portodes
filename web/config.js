@@ -8,7 +8,7 @@ window.APP_CONFIG = {
   PROJECT_DETAIL: (id) => `/api/latest?id=${id}`,
   CONTACT_ENDPOINT: "/contact",
   HERO: {
-    NAME: "Baboii",
+    NAME: "D Rialdi",
     ROLE: "Creative Designer",
     PHOTO: "assets/profile (2).png", // ganti dengan foto kamu di path ini
     MESSAGES: ["haii"],

@@ -59,9 +59,9 @@ export function normalizeProject(p) {
   const isImage = typeof p.mimeType === 'string' && p.mimeType.startsWith('image/');
   function ensureImageUrl(val) {
     if (val && (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('/'))) return val;
-    if (!val && id) return `/api/file/thumb/${id}`;
+    if (!val && id) return `/api/file/image/${id}`;
     // jika val terlihat seperti ID mentah
-    if (val) return `/api/file/thumb/${val}`;
+    if (val) return `/api/file/image/${val}`;
     return null;
   }
   const image = isImage ? ensureImageUrl(p.image || p.thumb || null) : null;
