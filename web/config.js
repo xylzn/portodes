@@ -34,8 +34,8 @@ window.APP_CONFIG = {
   ],
   // Sosial media untuk navbar
   SOCIALS: [
-    { name: "Instagram", url: "https://instagram.com/your_handle", icon: "assets/logos/Instagram.png" },
-    { name: "TikTok",    url: "https://tiktok.com/@your_handle",   icon: "assets/logos/TikTok.png" },
-    { name: "Pinterest", url: "https://pinterest.com/your_handle", icon: "assets/logos/pinterest.png" }
+    { name: "Instagram", url: "https://instagram.com/@gewoonrevaa_", icon: "assets/logos/Instagram.png" },
+    { name: "TikTok",    url: "https://tiktok.com/@dudulzyo",   icon: "assets/logos/tiktokpng.png" },
+    { name: "Pinterest", url: "https://pinterest.com/baboii", icon: "assets/logos/pinterest.png" }
   ],
 };
