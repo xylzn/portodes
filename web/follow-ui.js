@@ -78,7 +78,7 @@
   }
 
   function findHeaderHost(){
-    // Prefer a container that includes the brand text or is a header bar
+    // Prefer the inner container that holds the brand/nav (so right alignment matches container width)
     var header = document.querySelector('header');
     var brand = null;
     var candidates = Array.prototype.slice.call(document.querySelectorAll('#brand,.brand,[data-brand], header a, header h1, header h2, header .logo, a, h1, h2'));
@@ -86,12 +86,13 @@
       var el = candidates[i];
       try {
         var t = (el.textContent||'').trim().toLowerCase();
-        if (t && (t === 'baboii' || t === 'baboii.' || t.indexOf('baboii') !== -1)) { brand = el; break; }
+        if (t && (t === 'baboii' || t === 'baboii.' || t.indexOf('baboii') !== -1 || t.indexOf('rialdi') !== -1)) { brand = el; break; }
       } catch(e){}
     }
     var host = null;
     if (brand) {
-      host = brand.closest('header') || brand.parentElement;
+      // Use brand's parent (the grid container) first, then fall back to header
+      host = brand.parentElement || (brand.closest && brand.closest('header')) || header;
     }
     if (!host) host = header || document.querySelector('#topbar') || document.querySelector('.topbar');
     return host;

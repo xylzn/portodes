@@ -40,7 +40,8 @@ module.exports = async (req, res) => {
           width: f.imageMediaMetadata?.width || null,
           height: f.imageMediaMetadata?.height || null,
           preview: `https://drive.google.com/file/d/${f.id}/preview`,
-          image: `/api/file/image/${f.id}`,
+          // Use query-param alias to avoid any dynamic-route rewrites
+          image: `/api/file/image?id=${f.id}`,
           view: f.webViewLink,
           thumb: f.thumbnailLink || null,
           modifiedTime: f.modifiedTime,

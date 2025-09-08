@@ -18,10 +18,10 @@ export function ImageCard(project, onClick) {
     imgEl.addEventListener('error', () => {
       if (!imgEl.dataset.fallback) {
         imgEl.dataset.fallback = '1';
-        imgEl.src = `/api/file/image/${id}`;
+        // Fallback to alias that uses query param
+        imgEl.src = `/api/file/image?id=${id}`;
       }
     });
   }
   return card;
 }
-

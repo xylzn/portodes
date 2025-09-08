@@ -23,10 +23,10 @@ export function GalleryItem(item, onClick) {
     imgEl.addEventListener('error', () => {
       if (!imgEl.dataset.fallback) {
         imgEl.dataset.fallback = '1';
-        imgEl.src = `/api/file/image/${item.id}`;
+        // Fallback to alias that uses query param
+        imgEl.src = `/api/file/image?id=${item.id}`;
       }
     });
   }
   return a;
 }
-

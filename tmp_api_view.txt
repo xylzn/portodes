@@ -1,4 +1,4 @@
-export function getBaseUrl() {
+﻿export function getBaseUrl() {
   const cfg = window.APP_CONFIG || {};
   return (cfg.BASE_URL || "").replace(/\/$/, "");
 }
@@ -55,19 +55,19 @@ export function normalizeProject(p) {
   const id = p.id ?? p._id ?? p.slug ?? p.key ?? String(Math.random()).slice(2);
   const title = p.title ?? p.name ?? p.projectName ?? "Untitled";
   const description = p.description ?? p.summary ?? p.excerpt ?? (p.modifiedTime ? `Diperbarui ${new Date(p.modifiedTime).toLocaleDateString('id-ID')}` : "");
-  // Map field Drive → URL gambar yang valid
+  // Map field Drive â†’ URL gambar yang valid
   const isImage = typeof p.mimeType === 'string' && p.mimeType.startsWith('image/');
   function ensureImageUrl(val) {
     if (val && (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('/'))) return val;
-    if (!val && id) return `/api/file/image?id=${id}`;
+    if (!val && id) return `/api/file/image/${id}`;
     // jika val terlihat seperti ID mentah
-    if (val) return `/api/file/image?id=${val}`;
+    if (val) return `/api/file/image/${val}`;
     return null;
   }
   const image = isImage ? ensureImageUrl(p.image || p.thumb || null) : null;
   const tags = (p.tags ?? p.tech ?? p.stack ?? [])
     .concat([p.category?.name, p.mimeType].filter(Boolean));
-  const link = p.link ?? p.url ?? p.live ?? p.view ?? p.preview ?? (id ? `/api/file/image?id=${id}` : null);
+  const link = p.link ?? p.url ?? p.live ?? p.view ?? p.preview ?? (id ? `/api/file/image/${id}` : null);
   const repo = p.repo ?? p.repository ?? null;
   const date = p.date ?? p.createdAt ?? p.publishedAt ?? null;
   const width = p.width ?? p.imageMediaMetadata?.width ?? null;
