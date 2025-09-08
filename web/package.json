@@ -1,0 +1,11 @@
+{
+  "name": "portfolio-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static web + Vercel serverless API for Google Drive",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "googleapis": "^159.0.0"
+  }
+}
+
