@@ -10,37 +10,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet"
 > <link rel="stylesheet" href="style.css">
     <style>
-  
       html, body { overflow-x: hidden; }
       .fade-in { animation: fadeIn .6s ease-out; }
       @keyframes fadeIn { from {opacity: 0; transform: translateY(6px);} to {opacity: 1; transform: translateY(0);} }
       .caret::after { content: "|"; margin-left: 2px; opacity: 1; animation: blink 1s steps(2, start) infinite; }
       @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
-      /* Instant preloader: hide content until loader attaches */
-      body[data-preload] > :not(#preloader) { visibility: hidden !important; }
-      #preloader { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #000; z-index: 9999; }
-      #preloader .spinner { width: 40px; height: 40px; border-radius: 9999px; border: 3px solid rgba(255,255,255,.25); border-top-color: #22d3ee; animation: spin .8s linear infinite; }
-      #preloader .label { margin-top: 12px; color: #cbd5e1; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; letter-spacing: .08em; font-size: 12px; text-align:center; }
-      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
-  <body class="bg-slate-950 text-slate-100" data-preload>
-    <div id="preloader">
-      <div>
-        <div class="spinner mx-auto"></div>
-        <div class="label">LOADING</div>
+  <body class="bg-slate-950 text-slate-100">
+    <!-- App Loader (space theme + custom GIF) -->
+    <div id="app-loader" class="theme-space">
+      <div class="loader-box">
+        <img src="assets/loader.gif" class="loader-img blend-screen" alt="Loading" />
+        <div class="loader-text">LOADING</div>
       </div>
     </div>
     <script>
+      // Hide the loader when page is ready or when app dispatches the event
       (function(){
-        var pre = document.getElementById('preloader');
+        var box = document.getElementById('app-loader');
         function hide(){
-          if (!pre) return;
-          pre.style.opacity = '0';
-          setTimeout(function(){ if(pre && pre.parentNode) pre.parentNode.removeChild(pre); document.body.removeAttribute('data-preload'); }, 120);
+          if (!box) return; box.classList.add('is-hiding');
+          setTimeout(function(){ if(box && box.parentNode) box.parentNode.removeChild(box); }, 300);
         }
         window.addEventListener('app-loader:done', hide, { once: true });
-        window.addEventListener('load', function(){ setTimeout(hide, 100); }, { once: true });
+        window.addEventListener('load', function(){ setTimeout(hide, 150); }, { once: true });
       })();
     </script>
     <!-- Navbar -->
@@ -206,6 +200,21 @@
     </div>
 
     <script src="./config.js"></script>
+    <script>
+      // Apply loader config (background/theme)
+      (function(){
+        var cfg = window.APP_CONFIG || {};
+        if (cfg.LOADER_BG) document.documentElement.style.setProperty('--loader-bg', cfg.LOADER_BG);
+        var el = document.getElementById('app-loader');
+        if (el){
+          if (cfg.LOADER_THEME === 'space') el.classList.add('theme-space');
+          else el.classList.remove('theme-space');
+          // if custom image path changed, update src
+          if (cfg.LOADER_IMAGE) { var img = el.querySelector('.loader-img'); if (img) img.src = cfg.LOADER_IMAGE; }
+          if (cfg.LOADER_TEXT) { var t = el.querySelector('.loader-text'); if (t) t.textContent = cfg.LOADER_TEXT; }
+        }
+      })();
+    </script>
     <script type="module" src="./app.js"></script>
   </body>
   </html>

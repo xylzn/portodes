@@ -1,3 +1,4 @@
+import "./loader.js";
 import { api, normalizeProject } from "./api.js";
 import { ProjectCard } from "./components/Card.js";
 import { ImageCard } from "./components/ImageCard.js";

@@ -365,3 +365,8 @@ h1, h2, h3 { font-family: 'Press Start 2P', Inter, ui-sans-serif, system-ui, san
 @media (prefers-reduced-motion: reduce) {
   #hero-role.role-sweep { animation: none; background-position: 0 0, 0 0; }
 }
+
+/* ---- Follow UI: inline placement helper ---- */
+.header-follow-inline { position: relative; }
+.header-follow-inline #follow-area { position: static; right: auto; top: auto; transform: none; margin-left: 0.5rem; display: flex; }
+.header-follow-inline #socials-mobile { display: none !important; }

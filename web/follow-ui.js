@@ -108,7 +108,12 @@
     var oldMob = document.getElementById('socials-mobile'); if (oldMob && oldMob.parentNode) oldMob.parentNode.removeChild(oldMob);
     if (host) {
       host.classList.add('header-follow-host');
-      host.appendChild(desktop);
+      // Prefer to mount desktop area inside the right column container (burger's parent)
+      var burger = document.getElementById('burger');
+      var rightCol = burger && burger.parentElement ? burger.parentElement : host;
+      rightCol.classList.add('header-follow-inline');
+      rightCol.appendChild(desktop);
+      // Mobile center overlay stays relative to whole header
       host.appendChild(mobile);
       // Match right margin to brand's left padding/offset
       try {
