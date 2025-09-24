@@ -329,7 +329,8 @@ h1, h2, h3 { font-family: 'Press Start 2P', Inter, ui-sans-serif, system-ui, san
 }
 
 @media (max-width: 1023.98px) {
-  #follow-area { display: none; }
+  #follow-area,
+  .header-follow-inline #follow-area { display: none !important; }
   #socials-mobile { display: flex; }
 }
 
