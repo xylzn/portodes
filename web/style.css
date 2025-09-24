@@ -333,6 +333,31 @@ h1, h2, h3 { font-family: 'Press Start 2P', Inter, ui-sans-serif, system-ui, san
   #socials-mobile { display: flex; }
 }
 
+@media (max-width: 1279.98px) {
+  #follow-btn {
+    display: none;
+  }
+  #follow-menu {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  #follow-area:hover #follow-menu,
+  #follow-area.open #follow-menu {
+    display: flex;
+  }
+  #follow-menu .follow-item {
+    padding: 0;
+  }
+}
+
 /* Role light sweep effect (infinite) */
 #hero-role.role-sweep {
   position: relative;
@@ -370,3 +395,4 @@ h1, h2, h3 { font-family: 'Press Start 2P', Inter, ui-sans-serif, system-ui, san
 .header-follow-inline { position: relative; }
 .header-follow-inline #follow-area { position: static; right: auto; top: auto; transform: none; margin-left: 0.5rem; display: flex; }
 .header-follow-inline #socials-mobile { display: none !important; }
+
